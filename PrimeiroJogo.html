@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+        <canvas width="600" height="400"></canvas>
+        <br>
+        <button class="myButton">Dificuldade</button>
+
+<script>
+    
+    var dificuladade = 0
+    console.log(dificuladade)
+    var escolha = parseInt(prompt("Escolha a dificuladade, digite: \n 1 - facil \n 2 - médio \n 3 - dificil \n 4 - hardcore"))
+    switch (escolha) {
+
+        case 1:
+        dificuladade = 1000;
+            break;
+
+        case 2:
+        dificuladade = 750;
+            break;
+
+        case 3:
+        dificuladade = 500;
+            break;
+
+        case 4:
+        dificuladade = 380;
+            break;
+    
+        default:
+            alert("valor invalido!")
+            location.reload();
+            break;
+    }
+
+    var tela = document.querySelector('canvas');
+    var pincel = tela.getContext('2d')
+    pincel.fillStyle = 'lightgray'
+    pincel.fillRect(0,0,600,400)
+    var raio = 10
+    var xAleatorio;
+    var yAleatorio; 
+
+    function desenhaCirculo(x, y, raio, cor) {
+
+        pincel.fillStyle = cor
+        pincel.beginPath();
+        pincel.arc(x,y,raio,0, 2 * Math.PI)
+        pincel.fill()
+    }
+
+    function limpaTela() {
+        pincel.clearRect(0,0,600,400)
+    }
+
+
+    function desenhaAlvo(x , y) {
+
+        desenhaCirculo(x,y, raio + 20, 'red')
+        desenhaCirculo(x,y, raio + 10, 'white')
+        desenhaCirculo(x,y, raio, 'red')
+        
+    }
+
+    function sortePosicao(maximo) {
+
+        return Math.floor(Math.random() * maximo)
+
+        
+    }
+
+
+    function atualizaTela() {
+        limpaTela();
+        xAleatorio = sortePosicao(600);
+        yAleatorio = sortePosicao(400);
+
+        desenhaAlvo(xAleatorio, yAleatorio);
+    
+        
+    }
+
+
+    setInterval(atualizaTela, dificuladade )
+
+
+    function dispara(evento) {
+
+        var x = evento.pageX - tela.offsetLeft
+        var y = evento.pageY - tela.offsetTop
+
+        
+        if ((x > xAleatorio - raio) 
+        && (x < xAleatorio + raio) 
+        && (y > yAleatorio - raio) 
+        && (y < yAleatorio + raio)) {
+
+            alert('acertou!')
+        }
+        
+    }
+
+    function atualizapagina() {
+        location.reload();
+    }
+
+    var recarrega = document.querySelector('button');
+    recarrega.onclick = atualizapagina;
+
+    tela.onclick = dispara;
+
+
+</script>
+</body>
+</html>
+
+
